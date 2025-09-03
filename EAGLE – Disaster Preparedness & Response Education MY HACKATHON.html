@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)http://127.0.0.1:5500/EAGLE.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EAGLE – Disaster Preparedness &amp; Response Education</title>
+  <!-- Tailwind CSS -->
+  <script src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/saved_resource"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkfQ+LbNehSX6BeR1OT8WqfNvhxQ4lWwfvZB2V2X2gYd5w3X3E+f6GZKw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <!-- Chart.js -->
+  <script src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/chart.umd.min.js.download"></script>
+  <!-- Leaflet for Maps -->
+  <link rel="stylesheet" href="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/leaflet.css">
+  <script src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/leaflet.js.download"></script>
+
+  <meta name="theme-color" content="#0b132b">
+
+  <style>
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Animated gradient background for hero */
+    .animated-gradient {
+      background: linear-gradient(120deg, #0b132b, #1c2541, #3a506b, #5bc0be, #0b132b);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Card tilt effect */
+    .tilt {
+      transform-style: preserve-3d;
+      transform: perspective(900px);
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .tilt:hover { 
+      box-shadow: 0 20px 45px rgba(0,0,0,.35); 
+      transform: translateY(-5px);
+    }
+
+    /* Modal base */
+    .modal { display:none; }
+    .modal.active { display:flex; }
+
+    /* Big, eye-catching drill modal */
+    .drill-modal-content {
+      max-width: 860px; /* bigger */
+      border: 3px solid #ef4444;
+      box-shadow: 0 0 28px rgba(239,68,68,0.9);
+      animation: redPulse 2s infinite;
+    }
+    @keyframes redPulse {
+      0%,100% { box-shadow: 0 0 20px rgba(239,68,68,0.65); }
+      50% { box-shadow: 0 0 36px rgba(239,68,68,1); }
+    }
+
+    /* Toasts */
+    .toast { animation: slideIn .35s ease; }
+    @keyframes slideIn {
+      from { transform: translateX(30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Active nav link underline */
+    .nav-active::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -6px;
+      height: 2px; border-radius: 2px; background: #5bc0be;
+      box-shadow: 0 0 8px rgba(91,192,190,.9);
+    }
+    
+    /* Map container */
+    #map {
+      height: 300px;
+      width: 100%;
+      border-radius: 12px;
+      z-index: 1;
+    }
+    
+    /* Emergency animation */
+    @keyframes emergencyFlash {
+      0%, 100% { background-color: rgba(239, 68, 68, 0.1); }
+      50% { background-color: rgba(239, 68, 68, 0.3); }
+    }
+    
+    .emergency-mode {
+      animation: emergencyFlash 1s infinite;
+    }
+    
+    /* Simulation effects */
+    .earthquake {
+      animation: shake 0.5s infinite;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    .fire-effect {
+      background: linear-gradient(to bottom, rgba(255, 60, 0, 0.3), rgba(255, 140, 0, 0.2));
+      animation: flicker 0.5s infinite alternate;
+    }
+    
+    @keyframes flicker {
+      0% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    
+    .flood-effect {
+      background: linear-gradient(to bottom, rgba(0, 100, 200, 0.3), rgba(0, 150, 255, 0.2));
+      animation: wave 3s infinite linear;
+    }
+    
+    @keyframes wave {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    
+    /* Resource status indicators */
+    .status-low { color: #ef4444; }
+    .status-medium { color: #f59e0b; }
+    .status-high { color: #10b981; }
+    
+    /* Progress bars */
+    .progress-bar {
+      transition: width 0.5s ease-in-out;
+    }
+    
+    /* Badge animations */
+    .badge {
+      transition: transform 0.3s ease;
+    }
+    
+    .badge:hover {
+      transform: scale(1.1);
+    }
+  </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.-inset-4{inset:-1rem}.inset-0{inset:0px}.bottom-4{bottom:1rem}.right-4{right:1rem}.top-0{top:0px}.z-10{z-index:10}.z-50{z-index:50}.z-\[60\]{z-index:60}.z-\[70\]{z-index:70}.mx-auto{margin-left:auto;margin-right:auto}.mb-10{margin-bottom:2.5rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-6{margin-bottom:1.5rem}.me-2{margin-inline-end:0.5rem}.mt-1{margin-top:0.25rem}.mt-10{margin-top:2.5rem}.mt-12{margin-top:3rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.aspect-\[4\/3\]{aspect-ratio:4/3}.h-10{height:2.5rem}.h-3{height:0.75rem}.h-\[320px\]{height:320px}.h-full{height:100%}.min-h-screen{min-height:100vh}.w-10{width:2.5rem}.w-full{width:100%}.min-w-full{min-width:100%}.max-w-7xl{max-width:80rem}.max-w-xl{max-width:36rem}.flex-1{flex:1 1 0%}.scale-125{--tw-scale-x:1.25;--tw-scale-y:1.25;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-pointer{cursor:pointer}.list-decimal{list-style-type:decimal}.list-disc{list-style-type:disc}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-12{gap:3rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-x-hidden{overflow-x:hidden}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-white\/10{border-color:rgb(255 255 255 / 0.1)}.bg-\[\#0b132b\]{--tw-bg-opacity:1;background-color:rgb(11 19 43 / var(--tw-bg-opacity, 1))}.bg-\[\#0b132bcc\]{background-color:#0b132bcc}.bg-\[\#121b34\]{--tw-bg-opacity:1;background-color:rgb(18 27 52 / var(--tw-bg-opacity, 1))}.bg-\[\#5bc0be\]{--tw-bg-opacity:1;background-color:rgb(91 192 190 / var(--tw-bg-opacity, 1))}.bg-black\/20{background-color:rgb(0 0 0 / 0.2)}.bg-black\/30{background-color:rgb(0 0 0 / 0.3)}.bg-black\/40{background-color:rgb(0 0 0 / 0.4)}.bg-black\/70{background-color:rgb(0 0 0 / 0.7)}.bg-rose-500{--tw-bg-opacity:1;background-color:rgb(244 63 94 / var(--tw-bg-opacity, 1))}.bg-slate-600{--tw-bg-opacity:1;background-color:rgb(71 85 105 / var(--tw-bg-opacity, 1))}.bg-teal-500{--tw-bg-opacity:1;background-color:rgb(20 184 166 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/10{background-color:rgb(255 255 255 / 0.1)}.bg-white\/5{background-color:rgb(255 255 255 / 0.05)}.bg-rose-600{--tw-bg-opacity:1;background-color:rgb(225 29 72 / var(--tw-bg-opacity, 1))}.bg-teal-600{--tw-bg-opacity:1;background-color:rgb(13 148 136 / var(--tw-bg-opacity, 1))}.bg-slate-700{--tw-bg-opacity:1;background-color:rgb(51 65 85 / var(--tw-bg-opacity, 1))}.bg-\[url\(\'https\:\/\/images\.unsplash\.com\/photo-1601134467661-3d775b999c8b\?q\=80\&w\=1200\&auto\=format\&fit\=crop\'\)\]{background-image:url('https://images.unsplash.com/photo-1601134467661-3d775b999c8b?q=80&w=1200&auto=format&fit=crop')}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-teal-400\/30{--tw-gradient-from:rgb(45 212 191 / 0.3) var(--tw-gradient-from-position);--tw-gradient-to:rgb(45 212 191 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.via-cyan-400\/20{--tw-gradient-to:rgb(34 211 238 / 0)  var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), rgb(34 211 238 / 0.2) var(--tw-gradient-via-position), var(--tw-gradient-to)}.to-rose-400\/20{--tw-gradient-to:rgb(251 113 133 / 0.2) var(--tw-gradient-to-position)}.bg-cover{background-size:cover}.bg-center{background-position:center}.object-cover{object-fit:cover}.p-2{padding:0.5rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-20{padding-top:5rem;padding-bottom:5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.pb-10{padding-bottom:2.5rem}.ps-5{padding-inline-start:1.25rem}.pt-16{padding-top:4rem}.text-left{text-align:left}.text-center{text-align:center}.align-top{vertical-align:top}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-5xl{font-size:3rem;line-height:1}.text-6xl{font-size:3.75rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-semibold{font-weight:600}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.leading-tight{line-height:1.25}.tracking-wide{letter-spacing:0.025em}.text-slate-100{--tw-text-opacity:1;color:rgb(241 245 249 / var(--tw-text-opacity, 1))}.text-\[\#0b132b\]{--tw-text-opacity:1;color:rgb(11 19 43 / var(--tw-text-opacity, 1))}.text-rose-400{--tw-text-opacity:1;color:rgb(251 113 133 / var(--tw-text-opacity, 1))}.text-slate-200\/90{color:rgb(226 232 240 / 0.9)}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-teal-300{--tw-text-opacity:1;color:rgb(94 234 212 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-50{opacity:0.5}.shadow{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgb(0 0 0 / 0.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.blur-2xl{--tw-blur:blur(40px);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur{--tw-backdrop-blur:blur(8px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.hover\:bg-rose-400:hover{--tw-bg-opacity:1;background-color:rgb(251 113 133 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-500:hover{--tw-bg-opacity:1;background-color:rgb(100 116 139 / var(--tw-bg-opacity, 1))}.hover\:bg-teal-400:hover{--tw-bg-opacity:1;background-color:rgb(45 212 191 / var(--tw-bg-opacity, 1))}.hover\:bg-white\/10:hover{background-color:rgb(255 255 255 / 0.1)}.hover\:bg-white\/20:hover{background-color:rgb(255 255 255 / 0.2)}.hover\:bg-white\/5:hover{background-color:rgb(255 255 255 / 0.05)}.hover\:bg-rose-500:hover{--tw-bg-opacity:1;background-color:rgb(244 63 94 / var(--tw-bg-opacity, 1))}.hover\:bg-teal-500:hover{--tw-bg-opacity:1;background-color:rgb(20 184 166 / var(--tw-bg-opacity, 1))}.hover\:text-teal-300:hover{--tw-text-opacity:1;color:rgb(94 234 212 / var(--tw-text-opacity, 1))}@media (min-width: 640px){.sm\:inline-flex{display:inline-flex}}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:flex{display:flex}.md\:hidden{display:none}.md\:h-\[420px\]{height:420px}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.md\:py-28{padding-top:7rem;padding-bottom:7rem}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-4xl{font-size:2.25rem;line-height:2.5rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-6xl{font-size:3.75rem;line-height:1}.md\:text-xl{font-size:1.25rem;line-height:1.75rem}}@media (min-width: 1024px){.lg\:col-span-2{grid-column:span 2 / span 2}.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.lg\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}}</style></head>
+
+<body class="bg-[#0b132b] text-slate-100 min-h-screen overflow-x-hidden">
+  <!-- Header / Nav -->
+  <header class="sticky top-0 z-50 backdrop-blur bg-[#0b132bcc] border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="http://127.0.0.1:5500/EAGLE.html#home" class="flex items-center gap-3">
+        <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#5bc0be] text-[#0b132b] font-black text-xl">E</span>
+        <span class="font-extrabold tracking-wide text-lg">EAGLE</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="http://127.0.0.1:5500/EAGLE.html#features" class="relative hover:text-teal-300">Features</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#simulator" class="relative hover:text-teal-300">Simulator</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#drill" class="relative hover:text-teal-300">Drills</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#quiz" class="relative hover:text-teal-300">Quiz</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#resources" class="relative hover:text-teal-300">Resources</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#incidents" class="relative hover:text-teal-300">Incidents</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#map-section" class="relative hover:text-teal-300">Campus Map</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button id="initiateDrillTop" class="hidden sm:inline-flex px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-semibold shadow" fdprocessedid="0q42x5">
+          <i class="fa-solid fa-play me-2"></i> Initiate Drill
+        </button>
+        <button id="hamburger" class="md:hidden p-2 rounded-lg hover:bg-white/10">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div id="mobileNav" class="hidden md:hidden border-t border-white/10 bg-[#0b132b]">
+      <div class="max-w-7xl mx-auto px-4 py-3 grid grid-cols-2 gap-3">
+        <a href="http://127.0.0.1:5500/EAGLE.html#features" class="px-3 py-2 rounded-lg hover:bg-white/5">Features</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#simulator" class="px-3 py-2 rounded-lg hover:bg-white/5">Simulator</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#drill" class="px-3 py-2 rounded-lg hover:bg-white/5">Drills</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#quiz" class="px-3 py-2 rounded-lg hover:bg-white/5">Quiz</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#resources" class="px-3 py-2 rounded-lg hover:bg-white/5">Resources</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#incidents" class="px-3 py-2 rounded-lg hover:bg-white/5">Incidents</a>
+        <a href="http://127.0.0.1:5500/EAGLE.html#map-section" class="px-3 py-2 rounded-lg hover:bg-white/5">Campus Map</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="home" class="animated-gradient">
+    <div class="max-w-7xl mx-auto px-4 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
+      <div>
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+          Disaster Preparedness for <span class="text-teal-300">Indian Schools &amp; Colleges</span>
+        </h1>
+        <p class="mt-4 text-slate-200/90 text-lg md:text-xl max-w-xl">
+          Train, simulate, and respond with EAGLE — a modern platform for drills, learning, and campus safety designed for Indian institutions.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="http://127.0.0.1:5500/EAGLE.html#drill" class="px-5 py-3 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-semibold shadow-lg">
+            <i class="fa-solid fa-bullhorn me-2"></i> Initiate Drill
+          </a>
+          <a href="http://127.0.0.1:5500/EAGLE.html#quiz" class="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold">
+            <i class="fa-solid fa-circle-question me-2"></i> Take Quiz
+          </a>
+          <a href="http://127.0.0.1:5500/EAGLE.html#resources" class="px-5 py-3 rounded-xl bg-white text-[#0b132b] font-semibold">
+            <i class="fa-solid fa-clipboard-list me-2"></i> View Resources
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="mt-12 grid grid-cols-3 gap-6">
+          <div class="tilt rounded-2xl bg-black/20 p-5 border border-white/10">
+            <div class="text-3xl font-extrabold" data-countup="42">42</div>
+            <div class="text-slate-300">Completed Drills</div>
+          </div>
+          <div class="tilt rounded-2xl bg-black/20 p-5 border border-white/10">
+            <div class="text-3xl font-extrabold" data-countup="1280">1280</div>
+            <div class="text-slate-300">Students Trained</div>
+          </div>
+          <div class="tilt rounded-2xl bg-black/20 p-5 border border-white/10" style="transform: perspective(900px);">
+            <div class="text-3xl font-extrabold" data-countup="7">7</div>
+            <div class="text-slate-300">Active Wardens</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Illustration block -->
+      <div class="tilt relative" style="transform: perspective(900px);">
+        <div class="absolute -inset-4 rounded-3xl bg-gradient-to-br from-teal-400/30 via-cyan-400/20 to-rose-400/20 blur-2xl"></div>
+        <div class="relative rounded-3xl border border-white/10 bg-black/30 p-6 shadow-2xl">
+          <img src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/photo-1582719478250-c89cae4dc85b" alt="Emergency training" class="rounded-2xl w-full aspect-[4/3] object-cover">
+          <div class="mt-4 flex items-center justify-between">
+            <div class="text-slate-300"><i class="fa-solid fa-shield-heart me-2 text-teal-300"></i> Safety First</div>
+            <button id="initiateDrillHero" class="px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 text-white font-semibold" fdprocessedid="wr5dtc">
+              Start Drill
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-10">Why EAGLE?</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="tilt rounded-2xl bg-white/5 p-6 border border-white/10" style="transform: perspective(900px);">
+          <div class="text-3xl">🧭</div>
+          <h3 class="mt-2 text-xl font-bold">Guided Drills</h3>
+          <p class="text-slate-300 mt-2">Run campus-wide drills with countdowns, checklists, and auto-notifications.</p>
+        </div>
+        <div class="tilt rounded-2xl bg-white/5 p-6 border border-white/10" style="transform: perspective(900px);">
+          <div class="text-3xl">🎮</div>
+          <h3 class="mt-2 text-xl font-bold">Interactive Simulator</h3>
+          <p class="text-slate-300 mt-2">Practice earthquake, fire, or flood scenarios with haptics and sound cues.</p>
+        </div>
+        <div class="tilt rounded-2xl bg-white/5 p-6 border border-white/10" style="transform: perspective(900px);">
+          <div class="text-3xl">📊</div>
+          <h3 class="mt-2 text-xl font-bold">Resource Dashboard</h3>
+          <p class="text-slate-300 mt-2">Track first-aid kits, extinguishers, and supplies; visualize readiness.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simulator -->
+  <section id="simulator" class="py-20 bg-white/5">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-3xl md:text-4xl font-extrabold">Disaster Simulator</h2>
+        <div class="text-sm text-slate-300">Tip: use headphones for audio cues</div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6">
+        <!-- Controls -->
+        <div class="rounded-2xl bg-black/30 border border-white/10 p-5">
+          <label class="block text-sm mb-2">Scenario</label>
+          <select id="scenario" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/10" fdprocessedid="adfmryc">
+            <option value="earthquake">Earthquake</option>
+            <option value="fire">Fire</option>
+            <option value="flood">Flood</option>
+          </select>
+
+          <label class="block text-sm mt-4 mb-2">Duration (seconds)</label>
+          <input id="simDuration" type="number" min="5" max="120" value="15" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/10" fdprocessedid="x63f2">
+
+          <div class="flex gap-3 mt-4">
+            <button id="startSim" class="flex-1 px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 font-semibold" fdprocessedid="8bnz3">Start</button>
+            <button id="stopSim" class="flex-1 px-4 py-2 rounded-xl bg-slate-600 hover:bg-slate-500 font-semibold" fdprocessedid="leuqp1">Stop</button>
+          </div>
+
+          <div class="mt-4 text-sm text-slate-300" id="simStatus">Simulation complete. Great job!</div>
+        </div>
+
+        <!-- Scene -->
+        <div class="lg:col-span-2 rounded-2xl bg-[url(&#39;https://images.unsplash.com/photo-1601134467661-3d775b999c8b?q=80&amp;w=1200&amp;auto=format&amp;fit=crop&#39;)] bg-cover bg-center border border-white/10 p-5 relative overflow-hidden" id="scene" style="transition: filter 200ms, transform 200ms, background 200ms; transform: none; filter: none; background-blend-mode: normal;">
+          <div class="absolute inset-0 bg-black/40"></div>
+          <div class="relative z-10 h-[320px] md:h-[420px] flex items-center justify-center">
+            <div id="simMessage" class="text-center">
+              <div class="text-6xl" id="simEmoji">🌏</div>
+              <div class="mt-3 text-xl font-semibold" id="simInstructions">DROP, COVER, and HOLD ON! Stay away from windows.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drills -->
+  <section id="drill" class="py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-3xl md:text-4xl font-extrabold">Campus Drill Center</h2>
+        <button id="openDrill" class="px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 font-semibold" fdprocessedid="4ao5do">
+          <i class="fa-solid fa-play me-2"></i> Initiate Drill
+        </button>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="tilt rounded-2xl bg-white/5 p-6 border border-white/10" style="transform: perspective(900px);">
+          <h3 class="text-xl font-bold">Standard Fire Drill</h3>
+          <ul class="text-slate-300 mt-2 list-disc ps-5 space-y-1">
+            <li>Announce drill campus-wide</li>
+            <li>Evacuate to nearest exit</li>
+            <li>Assemble at muster point</li>
+          </ul>
+        </div>
+        <div class="tilt rounded-2xl bg-white/5 p-6 border border-white/10" style="transform: perspective(900px);">
+          <h3 class="text-xl font-bold">Earthquake Drill</h3>
+          <ul class="text-slate-300 mt-2 list-disc ps-5 space-y-1">
+            <li>Drop, Cover, and Hold On</li>
+            <li>Wait for all-clear signal</li>
+            <li>Evacuate safely</li>
+          </ul>
+        </div>
+        <div class="tilt rounded-2xl bg-white/5 p-6 border border-white/10" style="transform: perspective(900px);">
+          <h3 class="text-xl font-bold">Flood Preparedness</h3>
+          <ul class="text-slate-300 mt-2 list-disc ps-5 space-y-1">
+            <li>Move to higher ground</li>
+            <li>Shut off electricity</li>
+            <li>Check emergency kits</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Drill Modal -->
+  <div id="drillModal" class="modal fixed inset-0 z-[60] items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="relative drill-modal-content w-full rounded-2xl bg-[#121b34] border border-white/10 p-6">
+      <div class="flex items-start gap-4">
+        <div class="text-4xl md:text-5xl">🚨</div>
+        <div class="flex-1">
+          <h2 class="text-2xl md:text-3xl font-extrabold text-rose-400">Initiate Campus-wide Drill</h2>
+          <p class="text-slate-300 mt-1">This will trigger countdowns, tones, and notifications for all connected devices.</p>
+        </div>
+        <button id="closeDrill" class="p-2 rounded-lg hover:bg-white/10" fdprocessedid="mzk4oe"><i class="fa-solid fa-xmark text-2xl"></i></button>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 mt-6">
+        <div>
+          <label class="block text-sm mb-2">Drill Type</label>
+          <select id="drillType" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/10" fdprocessedid="jpoov">
+            <option>Fire</option>
+            <option>Earthquake</option>
+            <option>Flood</option>
+            <option>Lockdown</option>
+          </select>
+
+          <label class="block text-sm mt-4 mb-2">Countdown (seconds)</label>
+          <input id="drillCountdownInput" type="number" min="5" max="180" value="15" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/10" fdprocessedid="osfdk">
+
+          <div class="flex items-center gap-3 mt-4">
+            <input id="notifyParents" type="checkbox" class="scale-125">
+            <label for="notifyParents" class="text-sm">Send SMS/Email notifications</label>
+          </div>
+        </div>
+
+        <div class="rounded-xl bg-black/30 border border-white/10 p-4">
+          <div class="text-sm text-slate-300">Countdown</div>
+          <div class="mt-2 text-5xl font-black tabular-nums" id="drillCountdown">0</div>
+          <div class="mt-3 h-3 w-full rounded-full bg-white/10 overflow-hidden">
+            <div id="drillBar" class="h-full bg-rose-500" style="width: 100%;"></div>
+          </div>
+          <div class="mt-4 text-slate-300" id="drillStatus">Drill in progress: Evacuate as instructed.</div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-3 justify-end">
+        <button id="previewTone" class="px-4 py-2 rounded-xl bg-slate-600 hover:bg-slate-500" fdprocessedid="xh8rkb">Preview Tone</button>
+        <button id="startDrill" class="px-5 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 font-semibold" fdprocessedid="zr6wqc">Start Drill</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz -->
+  <section id="quiz" class="py-20 bg-white/5">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-6">Disaster Readiness Quiz</h2>
+      <div class="rounded-2xl bg-black/30 border border-white/10 p-6">
+        <div class="h-3 rounded-full bg-white/10 overflow-hidden">
+          <div id="quizBar" class="h-full bg-teal-500" style="width:0%"></div>
+        </div>
+        <div id="quizBox" class="mt-5">
+        <div class="text-lg md:text-xl font-semibold">Q1. During an earthquake, the safest immediate action is…</div>
+        <div class="mt-4 grid gap-3">
+          <label class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer">
+            <input type="radio" name="opt" value="0">
+            <span>Run outside immediately</span>
+          </label><label class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer">
+            <input type="radio" name="opt" value="1">
+            <span>Drop, Cover, and Hold On</span>
+          </label><label class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer">
+            <input type="radio" name="opt" value="2">
+            <span>Stand under a door frame</span>
+          </label><label class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer">
+            <input type="radio" name="opt" value="3">
+            <span>Use the elevator to evacuate</span>
+          </label>
+        </div></div>
+        <div class="mt-5 flex gap-3">
+          <button id="prevQ" class="px-4 py-2 rounded-xl bg-slate-600 hover:bg-slate-500 opacity-50" disabled="">Back</button>
+          <button id="nextQ" class="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400" fdprocessedid="rns7gl">Next</button>
+        </div>
+        <div id="quizResult" class="mt-6 hidden"></div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="mt-8 grid md:grid-cols-2 gap-6">
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-6">
+          <h3 class="text-xl font-bold">🏆 Badges</h3>
+          <div id="badges" class="mt-3 flex flex-wrap gap-2"></div>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-6">
+          <h3 class="text-xl font-bold">📈 Leaderboard</h3>
+          <ol id="leaderboard" class="mt-3 list-decimal ps-5 space-y-1"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section id="resources" class="py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-3xl md:text-4xl font-extrabold">Resource Inventory</h2>
+        <button id="addItemBtn" class="px-4 py-2 rounded-xl bg-white text-[#0b132b] font-semibold" fdprocessedid="69zkfl"><i class="fa-solid fa-plus me-2"></i>Add Item</button>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 rounded-2xl bg-black/30 border border-white/10 p-4 overflow-x-auto">
+          <table class="min-w-full text-left text-sm">
+            <thead>
+              <tr class="text-slate-300">
+                <th class="py-2">Name</th>
+                <th class="py-2">Category</th>
+                <th class="py-2">Qty</th>
+                <th class="py-2">Location</th>
+                <th class="py-2">Status</th>
+                <th class="py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryRows" class="align-top">
+        <tr class="border-t border-white/10">
+          <td class="py-3">First-Aid Kit</td>
+          <td class="py-3">Medical</td>
+          <td class="py-3">12</td>
+          <td class="py-3">Block A - Office</td>
+          <td class="py-3 ">Unknown</td>
+          <td class="py-3">
+            <button data-id="7baea3a0-a99c-4039-9bea-bd998fa9b42c" class="edit px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 me-2" fdprocessedid="1zkise">Edit</button>
+            <button data-id="7baea3a0-a99c-4039-9bea-bd998fa9b42c" class="del px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-500" fdprocessedid="jrk3ej">Delete</button>
+          </td>
+        </tr>
+        <tr class="border-t border-white/10">
+          <td class="py-3">Fire Extinguisher (ABC)</td>
+          <td class="py-3">Fire Safety</td>
+          <td class="py-3">8</td>
+          <td class="py-3">All Floors</td>
+          <td class="py-3 ">Unknown</td>
+          <td class="py-3">
+            <button data-id="711455ca-be69-44b7-99e3-e8813f7fd42b" class="edit px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 me-2" fdprocessedid="b0s7yp">Edit</button>
+            <button data-id="711455ca-be69-44b7-99e3-e8813f7fd42b" class="del px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-500" fdprocessedid="esc81m">Delete</button>
+          </td>
+        </tr>
+        <tr class="border-t border-white/10">
+          <td class="py-3">Emergency Blanket</td>
+          <td class="py-3">Medical</td>
+          <td class="py-3">20</td>
+          <td class="py-3">Nurse Room</td>
+          <td class="py-3 ">Unknown</td>
+          <td class="py-3">
+            <button data-id="d6499c84-727f-4f73-9d4e-4c3c0e138282" class="edit px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 me-2" fdprocessedid="cmq7ja">Edit</button>
+            <button data-id="d6499c84-727f-4f73-9d4e-4c3c0e138282" class="del px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-500" fdprocessedid="ogyfuk">Delete</button>
+          </td>
+        </tr>
+        <tr class="border-t border-white/10">
+          <td class="py-3">Flashlight</td>
+          <td class="py-3">Utilities</td>
+          <td class="py-3">15</td>
+          <td class="py-3">Security</td>
+          <td class="py-3 ">Unknown</td>
+          <td class="py-3">
+            <button data-id="2c9117bd-b33e-4b61-ab98-6b2e58aeab21" class="edit px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 me-2" fdprocessedid="s1cpqm">Edit</button>
+            <button data-id="2c9117bd-b33e-4b61-ab98-6b2e58aeab21" class="del px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-500" fdprocessedid="5aw2m">Delete</button>
+          </td>
+        </tr>
+        <tr class="border-t border-white/10">
+          <td class="py-3">Sandbags</td>
+          <td class="py-3">Flood</td>
+          <td class="py-3">30</td>
+          <td class="py-3">Basement</td>
+          <td class="py-3 ">Unknown</td>
+          <td class="py-3">
+            <button data-id="92e2c0c5-1854-4f23-9ce2-295cf72bf382" class="edit px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 me-2" fdprocessedid="0lor9j">Edit</button>
+            <button data-id="92e2c0c5-1854-4f23-9ce2-295cf72bf382" class="del px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-500" fdprocessedid="ai5ei">Delete</button>
+          </td>
+        </tr></tbody>
+          </table>
+        </div>
+        <div class="rounded-2xl bg-black/30 border border-white/10 p-4">
+          <h3 class="text-lg font-bold mb-3">Readiness Overview</h3>
+          <canvas id="inventoryChart" height="458" style="display: block; box-sizing: border-box; height: 366px; width: 366px;" width="458"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Campus Map Section -->
+  <section id="map-section" class="py-20 bg-white/5">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-6">Campus Map &amp; Evacuation Routes</h2>
+      <div class="rounded-2xl bg-black/30 border border-white/10 p-4">
+        <div id="map" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0" style="position: relative;"><div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(0px, 0px, 0px);"><div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;"><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 17; transform: translate3d(0px, 0px, 0px) scale(0.5);"></div><div class="leaflet-tile-container leaflet-zoom-animated" style="z-index: 18; transform: translate3d(302px, 92px, 0px) scale(1);"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1787.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(136px, -70px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1787(1).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-120px, -70px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1787(2).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(392px, -70px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1786.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(136px, -326px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1786(1).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(392px, -326px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1788.png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(136px, 186px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1788(1).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(392px, 186px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1787(3).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(648px, -70px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1786(2).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-120px, -326px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1786(3).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(648px, -326px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1788(2).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-120px, 186px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1788(3).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(648px, 186px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1787(4).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-376px, -70px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1787(5).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(904px, -70px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1786(4).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-376px, -326px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1786(5).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(904px, -326px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1788(4).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(-376px, 186px, 0px); opacity: 1;"><img alt="" src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/1788(5).png" class="leaflet-tile leaflet-tile-loaded" style="width: 256px; height: 256px; transform: translate3d(904px, 186px, 0px); opacity: 1;"></div></div></div><div class="leaflet-pane leaflet-overlay-pane"></div><div class="leaflet-pane leaflet-shadow-pane"><img src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/marker-shadow.png" class="leaflet-marker-shadow leaflet-zoom-animated" alt="" style="margin-left: -12px; margin-top: -41px; width: 41px; height: 41px; transform: translate3d(602px, 157px, 0px);"><img src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/marker-shadow.png" class="leaflet-marker-shadow leaflet-zoom-animated" alt="" style="margin-left: -12px; margin-top: -41px; width: 41px; height: 41px; transform: translate3d(607px, 164px, 0px);"><img src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/marker-shadow.png" class="leaflet-marker-shadow leaflet-zoom-animated" alt="" style="margin-left: -12px; margin-top: -41px; width: 41px; height: 41px; transform: translate3d(595px, 154px, 0px);"><img src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/marker-shadow.png" class="leaflet-marker-shadow leaflet-zoom-animated" alt="" style="margin-left: -12px; margin-top: -41px; width: 41px; height: 41px; transform: translate3d(613px, 161px, 0px);"></div><div class="leaflet-pane leaflet-marker-pane"><img src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/marker-icon-2x.png" class="leaflet-marker-icon leaflet-zoom-animated leaflet-interactive" alt="Marker" tabindex="0" role="button" style="margin-left: -12px; margin-top: -41px; width: 25px; height: 41px; transform: translate3d(602px, 157px, 0px); z-index: 157;"><img src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/marker-icon-2x.png" class="leaflet-marker-icon leaflet-zoom-animated leaflet-interactive" alt="Marker" tabindex="0" role="button" style="margin-left: -12px; margin-top: -41px; width: 25px; height: 41px; transform: translate3d(607px, 164px, 0px); z-index: 164;"><img src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/marker-icon-2x.png" class="leaflet-marker-icon leaflet-zoom-animated leaflet-interactive" alt="Marker" tabindex="0" role="button" style="margin-left: -12px; margin-top: -41px; width: 25px; height: 41px; transform: translate3d(595px, 154px, 0px); z-index: 154;"><img src="./EAGLE – Disaster Preparedness &amp; Response Education MY HACKATHON_files/marker-icon-2x.png" class="leaflet-marker-icon leaflet-zoom-animated leaflet-interactive" alt="Marker" tabindex="0" role="button" style="margin-left: -12px; margin-top: -41px; width: 25px; height: 41px; transform: translate3d(613px, 161px, 0px); z-index: 161;"></div><div class="leaflet-pane leaflet-tooltip-pane"></div><div class="leaflet-pane leaflet-popup-pane"></div><div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(737449px, 457600px, 0px) scale(2048);"></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="http://127.0.0.1:5500/EAGLE.html#" title="Zoom in" role="button" aria-label="Zoom in" aria-disabled="false"><span aria-hidden="true">+</span></a><a class="leaflet-control-zoom-out" href="http://127.0.0.1:5500/EAGLE.html#" title="Zoom out" role="button" aria-label="Zoom out" aria-disabled="false"><span aria-hidden="true">−</span></a></div></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="https://leafletjs.com/" title="A JavaScript library for interactive maps"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8" class="leaflet-attribution-flag"><path fill="#4C7BE1" d="M0 0h12v4H0z"></path><path fill="#FFD500" d="M0 4h12v3H0z"></path><path fill="#E0BC00" d="M0 7h12v1H0z"></path></svg> Leaflet</a> <span aria-hidden="true">|</span> © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</div></div></div></div>
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-3 rounded-lg bg-white/5">
+            <h3 class="font-semibold text-teal-300">Emergency Assembly Points</h3>
+            <ul class="mt-2 text-sm text-slate-300">
+              <li>Main Ground (Primary)</li>
+              <li>Parking Area (Secondary)</li>
+              <li>Auditorium (Shelter)</li>
+            </ul>
+          </div>
+          <div class="p-3 rounded-lg bg-white/5">
+            <h3 class="font-semibold text-teal-300">Emergency Exits</h3>
+            <ul class="mt-2 text-sm text-slate-300">
+              <li>Main Gate (North)</li>
+              <li>Back Gate (South)</li>
+              <li>Side Gate (East)</li>
+            </ul>
+          </div>
+          <div class="p-3 rounded-lg bg-white/5">
+            <h3 class="font-semibold text-teal-300">Resource Locations</h3>
+            <ul class="mt-2 text-sm text-slate-300">
+              <li>First Aid - Admin Block</li>
+              <li>Fire Extinguishers - All Blocks</li>
+              <li>Emergency Kits - Security Office</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Emergency Contacts -->
+  <section class="py-20">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-6">Emergency Contacts (India)</h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="tilt rounded-2xl bg-white/5 p-4 border border-white/10 text-center" style="transform: perspective(900px);">
+          <div class="text-3xl mb-2">🚒</div>
+          <h3 class="font-semibold">Fire Department</h3>
+          <p class="text-teal-300 font-mono text-lg mt-1">101</p>
+        </div>
+        <div class="tilt rounded-2xl bg-white/5 p-4 border border-white/10 text-center" style="transform: perspective(900px);">
+          <div class="text-3xl mb-2">🚑</div>
+          <h3 class="font-semibold">Ambulance</h3>
+          <p class="text-teal-300 font-mono text-lg mt-1">102</p>
+        </div>
+        <div class="tilt rounded-2xl bg-white/5 p-4 border border-white/10 text-center" style="transform: perspective(900px);">
+          <div class="text-3xl mb-2">👮</div>
+          <h3 class="font-semibold">Police</h3>
+          <p class="text-teal-300 font-mono text-lg mt-1">100</p>
+        </div>
+        <div class="tilt rounded-2xl bg-white/5 p-4 border border-white/10 text-center" style="transform: perspective(900px);">
+          <div class="text-3xl mb-2">🚨</div>
+          <h3 class="font-semibold">Disaster Management</h3>
+          <p class="text-teal-300 font-mono text-lg mt-1">108</p>
+        </div>
+      </div>
+      
+      <div class="mt-8 grid md:grid-cols-2 gap-6">
+        <div class="rounded-2xl bg-white/5 p-5 border border-white/10">
+          <h3 class="text-xl font-bold mb-3">Campus Emergency Contacts</h3>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium">Security Control Room</p>
+                <p class="text-slate-300 text-sm">24/7 Available</p>
+              </div>
+              <p class="text-teal-300 font-mono">+91-XXXX-XXXXXX</p>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium">Medical Center</p>
+                <p class="text-slate-300 text-sm">8AM-8PM</p>
+              </div>
+              <p class="text-teal-300 font-mono">+91-XXXX-XXXXXX</p>
+            </div>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="font-medium">Administration</p>
+                <p class="text-slate-300 text-sm">9AM-5PM</p>
+              </div>
+              <p class="text-teal-300 font-mono">+91-XXXX-XXXXXX</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="rounded-2xl bg-white/5 p-5 border border-white/10">
+          <h3 class="text-xl font-bold mb-3">Quick Emergency Message</h3>
+          <div class="space-y-3">
+            <input type="text" placeholder="Your Name" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/10" fdprocessedid="vg5ic">
+            <input type="text" placeholder="Your Location" class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/10" fdprocessedid="f7pm3a">
+            <select class="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/10" fdprocessedid="5hs1v">
+              <option>Emergency Type</option>
+              <option>Fire</option>
+              <option>Medical Emergency</option>
+              <option>Natural Disaster</option>
+              <option>Security Issue</option>
+            </select>
+            <button class="w-full px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 font-semibold" fdprocessedid="o4mg7u">Send Alert</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Incident Reporting -->
+  <section id="incidents" class="py-20 bg-white/5">
+    <div class="max-w-7xl mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-6">Report an Incident</h2>
+      <form id="incidentForm" class="grid md:grid-cols-2 gap-4 rounded-2xl bg-black/30 border border-white/10 p-6">
+        <input required="" placeholder="Your Name" class="px-3 py-2 rounded-lg bg-white/10 border border-white/10" id="reporter" fdprocessedid="4wdthww">
+        <input required="" type="email" placeholder="Email" class="px-3 py-2 rounded-lg bg-white/10 border border-white/10" id="reporterEmail" fdprocessedid="7gyz7c">
+        <select required="" class="px-3 py-2 rounded-lg bg-white/10 border border-white/10" id="incidentType" fdprocessedid="ofsimj">
+          <option value="Fire">Fire</option>
+          <option value="Injury">Injury</option>
+          <option value="Hazard">Hazard</option>
+          <option value="Other">Other</option>
+        </select>
+        <input required="" placeholder="Location (e.g., Block A, Lab 2)" class="px-3 py-2 rounded-lg bg-white/10 border border-white/10" id="incidentLocation" fdprocessedid="hp7n2r">
+        <textarea required="" placeholder="Description" class="md:col-span-2 px-3 py-2 rounded-lg bg-white/10 border border-white/10" rows="4" id="incidentDesc"></textarea>
+        <div class="md:col-span-2 flex justify-end gap-3">
+          <button type="reset" class="px-4 py-2 rounded-xl bg-slate-600 hover:bg-slate-500" fdprocessedid="i2mrg">Clear</button>
+          <button type="submit" class="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400 font-semibold" fdprocessedid="2isyur">Submit</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="pt-16 pb-10">
+    <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-6">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#5bc0be] text-[#0b132b] font-black text-xl">E</span>
+          <span class="font-extrabold tracking-wide text-lg">EAGLE</span>
+        </div>
+        <p class="mt-3 text-slate-300">Vadodara Hackathon 6.0 – Disaster Preparedness &amp; Response Education System.</p>
+      </div>
+      <div>
+        <h4 class="font-bold mb-3">Product</h4>
+        <ul class="space-y-2 text-slate-300">
+          <li><a href="http://127.0.0.1:5500/EAGLE.html#features" class="hover:text-teal-300">Features</a></li>
+          <li><a href="http://127.0.0.1:5500/EAGLE.html#quiz" class="hover:text-teal-300">Quiz</a></li>
+          <li><a href="http://127.0.0.1:5500/EAGLE.html#resources" class="hover:text-teal-300">Inventory</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold mb-3">Support</h4>
+        <ul class="space-y-2 text-slate-300">
+          <li><a href="http://127.0.0.1:5500/EAGLE.html#incidents" class="hover:text-teal-300">Report Incident</a></li>
+          <li><button id="openDrillFooter" class="hover:text-teal-300" fdprocessedid="0wx3zw">Start Drill</button></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold mb-3">Contact</h4>
+        <p class="text-slate-300">Team EAGLE • info@eagle.example</p>
+        <p class="text-slate-300 mt-2">Based in Vadodara, Gujarat, India</p>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 mt-10 text-sm text-slate-400">© <span id="year">2025</span> EAGLE. All rights reserved.</div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div id="toastDeck" class="fixed bottom-4 right-4 z-[70] space-y-2"></div>
+
+  <!-- Scripts -->
+  <script>
+    // Helpers
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    // Year
+    $('#year').textContent = new Date().getFullYear();
+
+    // Mobile nav toggle
+    $('#hamburger').addEventListener('click', () => {
+      $('#mobileNav').classList.toggle('hidden');
+    });
+
+    // Active nav underline on scroll
+    const sections = ['#features', '#simulator', '#drill', '#quiz', '#resources', '#incidents', '#map-section'];
+    const navLinks = [...$$('header nav a')];
+    const onScroll = () => {
+      let current = null;
+      for (const id of sections) {
+        const el = document.querySelector(id);
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= 100 && rect.bottom >= 120) current = id;
+      }
+      navLinks.forEach(a => a.classList.remove('nav-active'));
+      if (current) {
+        const found = navLinks.find(a => a.getAttribute('href') === current);
+        if (found) found.classList.add('nav-active');
+      }
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+
+    // Tilt effect
+    $$('.tilt').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = e.clientX - r.left; const y = e.clientY - r.top;
+        const rx = ((y / r.height) - .5) * -6; // rotateX
+        const ry = ((x / r.width) - .5) * 6;   // rotateY
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(900px)';
+      });
+    });
+
+    // Count-up stats when visible
+    const countEls = [...$$('[data-countup]')];
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(({ isIntersecting, target }) => {
+        if (!isIntersecting) return;
+        const end = parseInt(target.getAttribute('data-countup'), 10);
+        let cur = 0; const step = Math.ceil(end / 50);
+        const t = setInterval(() => { cur += step; if (cur >= end) { cur = end; clearInterval(t); } target.textContent = cur; }, 30);
+        io.unobserve(target);
+      });
+    }, { threshold: 0.5 });
+    countEls.forEach(el => io.observe(el));
+
+    // Toasts
+    function toast(msg, type = 'info') {
+      const wrap = document.createElement('div');
+      wrap.className = `toast px-4 py-3 rounded-xl shadow-lg ${type === 'success' ? 'bg-teal-600' : type === 'error' ? 'bg-rose-600' : 'bg-slate-700'}`;
+      wrap.innerHTML = `<div class="flex items-center gap-3"><i class="fa-solid ${type==='success'?'fa-check':type==='error'?'fa-triangle-exclamation':'fa-bell'}"></i><div>${msg}</div></div>`;
+      $('#toastDeck').appendChild(wrap);
+      setTimeout(() => wrap.remove(), 4200);
+    }
+
+    // WebAudio tone (siren-like) - continuous version
+    let audioCtx;
+    let sirenOscillator;
+    let sirenGain;
+    
+    function startSiren() {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Stop any existing siren
+        if (sirenOscillator) {
+          sirenOscillator.stop();
+        }
+        
+        sirenOscillator = audioCtx.createOscillator();
+        sirenGain = audioCtx.createGain();
+        
+        sirenOscillator.type = 'sawtooth';
+        sirenOscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+        
+        // Create a periodic siren effect
+        sirenOscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+        sirenOscillator.frequency.linearRampToValueAtTime(900, audioCtx.currentTime + 0.5);
+        sirenOscillator.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 1);
+        
+        // Repeat the siren pattern
+        sirenOscillator.frequency.setValueAtTime(600, audioCtx.currentTime + 1);
+        sirenOscillator.frequency.linearRampToValueAtTime(900, audioCtx.currentTime + 1.5);
+        sirenOscillator.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 2);
+        
+        sirenGain.gain.value = 0.1;
+        
+        sirenOscillator.connect(sirenGain).connect(audioCtx.destination);
+        sirenOscillator.start();
+        
+        // Continue the siren pattern
+        setInterval(() => {
+          sirenOscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+          sirenOscillator.frequency.linearRampToValueAtTime(900, audioCtx.currentTime + 0.5);
+          sirenOscillator.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 1);
+        }, 2000);
+        
+      } catch (e) { console.warn('Audio not available'); }
+    }
+    
+    function stopSiren() {
+      if (sirenOscillator) {
+        sirenOscillator.stop();
+        sirenOscillator = null;
+      }
+    }
+
+    function playSiren(seconds = 2) {
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        const o = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(600, audioCtx.currentTime);
+        o.frequency.linearRampToValueAtTime(900, audioCtx.currentTime + seconds/2);
+        o.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + seconds);
+        g.gain.value = 0.001;
+        g.gain.exponentialRampToValueAtTime(0.25, audioCtx.currentTime + 0.05);
+        g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + seconds);
+        o.connect(g).connect(audioCtx.destination);
+        o.start();
+        o.stop(audioCtx.currentTime + seconds);
+      } catch (e) { console.warn('Audio not available'); }
+    }
+
+    // Vibrate helper
+    function buzz(ms = 200) { if (navigator.vibrate) navigator.vibrate(ms); }
+
+    // Drill modal logic
+    const drillModal = $('#drillModal');
+    function openDrill() { drillModal.classList.add('active'); }
+    function closeDrill() { drillModal.classList.remove('active'); }
+
+    $('#openDrill').addEventListener('click', openDrill);
+    $('#openDrillFooter').addEventListener('click', openDrill);
+    $('#initiateDrillTop').addEventListener('click', openDrill);
+    $('#initiateDrillHero').addEventListener('click', openDrill);
+    $('#closeDrill').addEventListener('click', closeDrill);
+
+    $('#previewTone').addEventListener('click', () => { playSiren(1.6); buzz(120); });
+
+    let drillTimer; let drillTotal = 15; let drillLeft = 15;
+    const drillBar = $('#drillBar');
+
+    function startDrill() {
+      drillTotal = parseInt($('#drillCountdownInput').value, 10) || 15;
+      drillLeft = drillTotal;
+      $('#drillCountdown').textContent = drillLeft;
+      $('#drillStatus').textContent = `Starting ${$('#drillType').value} drill…`;
+      
+      // Start continuous siren
+      startSiren();
+      
+      // Add emergency mode to body
+      document.body.classList.add('emergency-mode');
+      
+      buzz([100, 50, 100]);
+      clearInterval(drillTimer);
+      drillBar.style.width = '0%';
+      const started = Date.now();
+      drillTimer = setInterval(() => {
+        const elapsed = (Date.now() - started) / 1000;
+        drillLeft = Math.max(0, Math.ceil(drillTotal - elapsed));
+        $('#drillCountdown').textContent = drillLeft;
+        const pct = Math.min(100, (elapsed / drillTotal) * 100);
+        drillBar.style.width = pct + '%';
+        if (drillLeft <= 0) {
+          clearInterval(drillTimer);
+          $('#drillStatus').textContent = 'Drill in progress: Evacuate as instructed.';
+          buzz([200, 100, 200]);
+          toast('Drill triggered across connected devices.', 'success');
+          
+          // Stop siren after drill completes
+          setTimeout(() => {
+            stopSiren();
+            document.body.classList.remove('emergency-mode');
+            closeDrill();
+          }, 2000);
+        }
+      }, 200);
+    }
+    $('#startDrill').addEventListener('click', startDrill);
+
+    // Simulator
+    const simMsg = $('#simMessage');
+    const simEmoji = $('#simEmoji');
+    const simInst = $('#simInstructions');
+    const scene = $('#scene');
+    let simTicker;
+
+    function setSceneEffect(type, on) {
+      scene.style.transition = 'filter 200ms ease, transform 200ms ease, background 200ms ease';
+      if (!on) { 
+        scene.style.filter = 'none'; 
+        scene.style.transform = 'none'; 
+        scene.style.backgroundBlendMode = 'normal'; 
+        scene.classList.remove('earthquake', 'fire-effect', 'flood-effect');
+        return; 
+      }
+      
+      if (type === 'earthquake') {
+        scene.classList.add('earthquake');
+        let shake = 0; clearInterval(simTicker);
+        simTicker = setInterval(() => {
+          shake = (shake + 1) % 2; 
+          scene.style.transform = `translate(${shake?'-6px':'6px'}, ${shake?'-3px':'3px'}) rotate(${shake?'-0.6deg':'0.6deg'})`;
+        }, 60);
+      } else if (type === 'fire') {
+        scene.classList.add('fire-effect');
+        const overlay = document.createElement('div');
+        overlay.className = 'fire-overlay absolute inset-0 pointer-events-none';
+        overlay.style.background = 'radial-gradient(circle at 20% 80%, rgba(255,76,41,.35), transparent 40%), radial-gradient(circle at 80% 20%, rgba(255,180,41,.25), transparent 40%)';
+        scene.appendChild(overlay);
+      } else if (type === 'flood') {
+        scene.classList.add('flood-effect');
+        scene.style.backgroundBlendMode = 'multiply';
+      }
+    }
+
+    function clearSceneEffects() {
+      clearInterval(simTicker);
+      scene.style.transform = 'none';
+      scene.style.filter = 'none';
+      scene.style.backgroundBlendMode = 'normal';
+      scene.classList.remove('earthquake', 'fire-effect', 'flood-effect');
+      const fo = scene.querySelector('.fire-overlay');
+      if (fo) fo.remove();
+    }
+
+    $('#startSim').addEventListener('click', () => {
+      const type = $('#scenario').value;
+      const seconds = Math.max(5, Math.min(120, parseInt($('#simDuration').value, 10) || 15));
+      $('#simStatus').textContent = `Running ${type} simulation for ${seconds}s…`;
+      if (type === 'earthquake') {
+        simEmoji.textContent = '🌏';
+        simInst.textContent = 'DROP, COVER, and HOLD ON! Stay away from windows.';
+      } else if (type === 'fire') {
+        simEmoji.textContent = '🔥';
+        simInst.textContent = 'Use nearest safe exit. Do not use elevators. Crawl under smoke.';
+      } else {
+        simEmoji.textContent = '🌊';
+        simInst.textContent = 'Move to higher ground. Avoid basements and live wires.';
+      }
+      setSceneEffect(type, true);
+      playSiren(1.8); buzz(200);
+      const t0 = Date.now();
+      const timer = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - t0) / 1000);
+        $('#simStatus').textContent = `${type} simulation: ${seconds - elapsed}s left`;
+        if (elapsed >= seconds) {
+          clearInterval(timer); clearSceneEffects();
+          $('#simStatus').textContent = 'Simulation complete. Great job!';
+          toast('Simulation complete ✅', 'success');
+        }
+      }, 1000);
+    });
+    $('#stopSim').addEventListener('click', () => { clearSceneEffects(); $('#simStatus').textContent = 'Stopped.'; toast('Simulation stopped', 'info'); });
+
+    // Quiz engine
+    const questions = [
+      { q: 'During an earthquake, the safest immediate action is…', a: 1, opts: ['Run outside immediately', 'Drop, Cover, and Hold On', 'Stand under a door frame', 'Use the elevator to evacuate'] },
+      { q: 'Class A fire extinguishers are used for…', a: 2, opts: ['Electrical fires', 'Flammable liquids', 'Ordinary combustibles (wood, paper)', 'Cooking oils'] },
+      { q: 'If you smell gas after a quake, you should…', a: 0, opts: ['Turn off the main gas valve and evacuate', 'Light a match to find the leak', 'Open electrical switches', 'Ignore if smell is faint'] },
+      { q: 'Best flood response on campus is…', a: 3, opts: ['Go to basement parking', 'Wait near windows', 'Drive through moving water', 'Move to higher floors'] },
+      { q: 'For minor burns, the first-aid step is…', a: 1, opts: ['Apply butter', 'Cool under running water', 'Pop blisters', 'Ignore and continue'] },
+    ];
+    let qi = 0; const answers = new Array(questions.length).fill(null);
+
+    function renderQ() {
+      const { q, opts } = questions[qi];
+      $('#quizBar').style.width = `${(qi / questions.length) * 100}%`;
+      $('#quizBox').innerHTML = `
+        <div class="text-lg md:text-xl font-semibold">Q${qi+1}. ${q}</div>
+        <div class="mt-4 grid gap-3">
+          ${opts.map((o,i)=>`<label class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer">
+            <input type="radio" name="opt" value="${i}" ${answers[qi]===i?'checked':''} />
+            <span>${o}</span>
+          </label>`).join('')}
+        </div>`;
+      $$('#quizBox input[name="opt"]').forEach(r => r.addEventListener('change', (e) => { answers[qi] = parseInt(e.target.value, 10); }));
+      $('#prevQ').disabled = qi === 0; $('#prevQ').classList.toggle('opacity-50', qi===0);
+      $('#nextQ').textContent = qi === questions.length - 1 ? 'Submit' : 'Next';
+    }
+
+    function scoreQuiz() {
+      let s = 0; questions.forEach((x, i) => { if (answers[i] === x.a) s++; });
+      return s;
+    }
+
+    function awardBadges(score) {
+      const wrap = $('#badges'); wrap.innerHTML = '';
+      const mk = (label, icon) => `<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 badge">${icon} ${label}</span>`;
+      if (score >= 5) wrap.innerHTML += mk('Master Responder', '🥇');
+      if (score >= 4) wrap.innerHTML += mk('Safety Pro', '🥈');
+      if (score >= 3) wrap.innerHTML += mk('Prepared', '🥉');
+      if (score <= 2) wrap.innerHTML += mk('Keep Learning', '📘');
+    }
+
+    function updateLeaderboard(name, score) {
+      const key = 'eagle_lb_v1';
+      const list = JSON.parse(localStorage.getItem(key) || '[]');
+      list.push({ name, score, at: Date.now() });
+      list.sort((a,b)=>b.score - a.score || a.at - b.at);
+      const top = list.slice(0, 5);
+      localStorage.setItem(key, JSON.stringify(top));
+      const ol = $('#leaderboard');
+      ol.innerHTML = top.map((x,i)=>`<li><span class="font-semibold">${x.name}</span> — ${x.score}/${questions.length}</li>`).join('');
+    }
+
+    $('#prevQ').addEventListener('click', () => { if (qi>0) { qi--; renderQ(); } });
+    $('#nextQ').addEventListener('click', () => {
+      if (qi < questions.length - 1) { qi++; renderQ(); }
+      else {
+        const s = scoreQuiz();
+        $('#quizBar').style.width = '100%';
+        $('#quizResult').classList.remove('hidden');
+        $('#quizResult').innerHTML = `<div class="rounded-xl bg-white/5 p-4 border border-white/10">You scored <span class="font-bold">${s}</span> / ${questions.length}. Enter your name to save:</div>
+          <div class="mt-3 flex gap-3"><input id="playerName" placeholder="Your name" class="flex-1 px-3 py-2 rounded-lg bg-white/10 border border-white/10" /><button id="saveScore" class="px-4 py-2 rounded-xl bg-teal-500 hover:bg-teal-400">Save</button></div>`;
+        awardBadges(s);
+        toast(`Quiz completed with score ${s}/${questions.length}`, s>=3?'success':'info');
+        $('#saveScore').addEventListener('click', () => {
+          const name = ($('#playerName').value || 'Anonymous').slice(0,20);
+          updateLeaderboard(name, s);
+        }, { once: true });
+      }
+    });
+
+    renderQ();
+
+    // Inventory CRUD + chart
+    const invTbody = $('#inventoryRows');
+    const chartCtx = document.getElementById('inventoryChart');
+    const invKey = 'eagle_inventory_v2';
+
+    const defaultInv = [
+      { id: crypto.randomUUID(), name: 'First-Aid Kit', category: 'Medical', qty: 12, location: 'Block A - Office', status: 'high' },
+      { id: crypto.randomUUID(), name: 'Fire Extinguisher (ABC)', category: 'Fire Safety', qty: 8, location: 'All Floors', status: 'medium' },
+      { id: crypto.randomUUID(), name: 'Emergency Blanket', category: 'Medical', qty: 20, location: 'Nurse Room', status: 'high' },
+      { id: crypto.randomUUID(), name: 'Flashlight', category: 'Utilities', qty: 15, location: 'Security', status: 'high' },
+      { id: crypto.randomUUID(), name: 'Sandbags', category: 'Flood', qty: 30, location: 'Basement', status: 'low' },
+    ];
+
+    function loadInv() { return JSON.parse(localStorage.getItem(invKey) || 'null') || defaultInv; }
+    function saveInv(data) { localStorage.setItem(invKey, JSON.stringify(data)); }
+    
+    function getStatusText(status) {
+      switch(status) {
+        case 'high': return 'Adequate';
+        case 'medium': return 'Moderate';
+        case 'low': return 'Low';
+        default: return 'Unknown';
+      }
+    }
+    
+    function getStatusClass(status) {
+      switch(status) {
+        case 'high': return 'status-high';
+        case 'medium': return 'status-medium';
+        case 'low': return 'status-low';
+        default: return '';
+      }
+    }
+
+    function renderInv() {
+      const data = loadInv();
+      invTbody.innerHTML = data.map(row => `
+        <tr class="border-t border-white/10">
+          <td class="py-3">${row.name}</td>
+          <td class="py-3">${row.category}</td>
+          <td class="py-3">${row.qty}</td>
+          <td class="py-3">${row.location}</td>
+          <td class="py-3 ${getStatusClass(row.status)}">${getStatusText(row.status)}</td>
+          <td class="py-3">
+            <button data-id="${row.id}" class="edit px-3 py-1 rounded-lg bg-teal-600 hover:bg-teal-500 me-2">Edit</button>
+            <button data-id="${row.id}" class="del px-3 py-1 rounded-lg bg-rose-600 hover:bg-rose-500">Delete</button>
+          </td>
+        </tr>`).join('');
+      bindInvRowActions();
+      updateInvChart();
+    }
+
+    function bindInvRowActions() {
+      invTbody.querySelectorAll('button.edit').forEach(b => b.addEventListener('click', () => editItem(b.getAttribute('data-id'))));
+      invTbody.querySelectorAll('button.del').forEach(b => b.addEventListener('click', () => delItem(b.getAttribute('data-id'))));
+    }
+
+    function addItem() {
+      const name = prompt('Item name:'); if (!name) return;
+      const category = prompt('Category (Medical, Fire Safety, Utilities, Flood, Other):') || 'Other';
+      const qty = parseInt(prompt('Quantity:'), 10) || 1;
+      const location = prompt('Location:') || 'Storage';
+      
+      // Determine status based on quantity
+      let status = 'high';
+      if (qty < 5) status = 'low';
+      else if (qty < 10) status = 'medium';
+      
+      const data = loadInv();
+      data.push({ id: crypto.randomUUID(), name, category, qty, location, status });
+      saveInv(data); renderInv(); toast('Item added', 'success');
+    }
+
+    function editItem(id) {
+      const data = loadInv(); const row = data.find(x => x.id === id); if (!row) return;
+      const name = prompt('Item name:', row.name) || row.name;
+      const category = prompt('Category:', row.category) || row.category;
+      const qty = parseInt(prompt('Quantity:', row.qty), 10) || row.qty;
+      const location = prompt('Location:', row.location) || row.location;
+      
+      // Determine status based on quantity
+      let status = 'high';
+      if (qty < 5) status = 'low';
+      else if (qty < 10) status = 'medium';
+      
+      Object.assign(row, { name, category, qty, location, status });
+      saveInv(data); renderInv(); toast('Item updated', 'success');
+    }
+
+    function delItem(id) {
+      const data = loadInv().filter(x => x.id !== id); saveInv(data); renderInv(); toast('Item deleted', 'info');
+    }
+
+    $('#addItemBtn').addEventListener('click', addItem);
+
+    let invChart;
+    function updateInvChart() {
+      const data = loadInv();
+      const groups = {};
+      data.forEach(x => { groups[x.category] = (groups[x.category] || 0) + x.qty; });
+      const labels = Object.keys(groups);
+      const values = Object.values(groups);
+      const ds = { labels, datasets: [{ data: values }] };
+      if (invChart) { invChart.data = ds; invChart.update(); return; }
+      invChart = new Chart(chartCtx, { type: 'doughnut', data: ds, options: { plugins: { legend: { labels: { color: '#e5e7eb' } } } } });
+    }
+    renderInv();
+
+    // Incident form
+    $('#incidentForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const payload = {
+        name: $('#reporter').value,
+        email: $('#reporterEmail').value,
+        type: $('#incidentType').value,
+        location: $('#incidentLocation').value,
+        desc: $('#incidentDesc').value,
+        at: new Date().toISOString(),
+      };
+      const key = 'eagle_incidents_v1';
+      const list = JSON.parse(localStorage.getItem(key) || '[]');
+      list.unshift(payload); localStorage.setItem(key, JSON.stringify(list));
+      e.target.reset();
+      toast('Incident submitted. Safety team notified.', 'success');
+    });
+
+    // Initialize map with Indian location
+    function initMap() {
+      // Set initial view to India
+      const map = L.map('map').setView([22.3072, 73.1812], 13); // Vadodara, Gujarat coordinates
+      
+      // Add tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      
+      // Add markers for important locations
+      const markers = [
+        {
+          lat: 22.3072,
+          lng: 73.1812,
+          title: 'Main Building',
+          description: 'Primary administrative building'
+        },
+        {
+          lat: 22.3050,
+          lng: 73.1830,
+          title: 'Emergency Assembly Point',
+          description: 'Main gathering area during emergencies'
+        },
+        {
+          lat: 22.3080,
+          lng: 73.1790,
+          title: 'Medical Center',
+          description: 'Campus health facility'
+        },
+        {
+          lat: 22.3060,
+          lng: 73.1850,
+          title: 'Security Office',
+          description: '24/7 security services'
+        }
+      ];
+      
+      // Add each marker to the map
+      markers.forEach(location => {
+        L.marker([location.lat, location.lng])
+          .addTo(map)
+          .bindPopup(`<strong>${location.title}</strong><br>${location.description}`);
+      });
+    }
+    
+    // Initialize the map when the page loads
+    document.addEventListener('DOMContentLoaded', initMap);
+
+    // Close modal on ESC / overlay click
+    drillModal.addEventListener('click', (e) => { if (e.target === drillModal) closeDrill(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrill(); });
+  </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+<span id="PING_IFRAME_FORM_DETECTION" style="display: none;"></span></body></html>
